@@ -1,16 +1,10 @@
-use std::{
-    fs::File,
-    io::{BufReader, Read, Write},
-    path::Path,
-};
+use std::{fs::File, io::Write, path::Path};
 
 use clap::Subcommand;
-use ed25519_dalek::{Keypair, Signature, Signer};
+use ed25519_dalek::{Signature, Signer};
 use hex::FromHex;
 
-use crate::utils::{
-    generate_keypair, get_bytes_from_file, get_keypair_from_file, keypair_from_bytes,
-};
+use crate::utils::{generate_keypair, get_bytes_from_file, get_keypair_from_file};
 
 #[derive(Subcommand)]
 pub enum Commands {
@@ -86,7 +80,10 @@ fn generate_keypair_file(path: &str) {
 fn print_pubkey(path: &str) {
     let keypair = get_keypair_from_file(path);
 
-    println!("Public key: {:?}", keypair.public.as_bytes());
+    println!(
+        "Public key: {}",
+        hex::encode(keypair.public.as_bytes()).to_uppercase()
+    );
 }
 
 fn sign_data_from_file(path: &str, data_path: &str) {
